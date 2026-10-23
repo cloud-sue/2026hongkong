@@ -1,0 +1,825 @@
+<title>香港 가족여행 2026</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans+KR:wght@400;500;700&family=Noto+Serif+TC:wght@900&display=swap">
+<style>
+/* Layout: neon-sign hero, then each day drawn as an MTR line (stations = stops), then a vote board grouped by neighbourhood. Single dark "night street" world by choice. */
+:root {
+  color-scheme: dark;
+  --ink: #0d1517;          /* wet asphalt at night */
+  --ink-2: #142124;
+  --ink-3: #1c2c30;
+  --paper: #eee6d6;        /* cha chaan teng menu paper */
+  --muted: #93a6a4;
+  --neon: #ff3d55;         /* neon sign red */
+  --jade: #3fd8b8;         /* minibus / jade green */
+  --amber: #ffb648;        /* sodium street light */
+  --island: #3d95ee;       /* MTR Island Line */
+  --tsuenwan: #ee4a3e;     /* MTR Tsuen Wan Line */
+  --macau: #e9b44c;
+  --line: rgba(238, 230, 214, .12);
+  --f-display: "Black Han Sans", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --f-han: "Noto Serif TC", "Songti TC", "PMingLiU", serif;
+  --f-body: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--f-body);
+  font-size: 15px;
+  line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--ink); }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+.wrap { max-width: 1080px; margin: 0 auto; }
+h1, h2, h3 { text-wrap: balance; margin: 0; font-weight: 400; }
+
+/* ---------- hero ---------- */
+.hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: clamp(20px, 5vw, 56px);
+  align-items: center;
+  padding-block: 48px 40px;
+  overflow: hidden;
+}
+.hero::before { /* Choi Hung-style apartment windows */
+  content: ""; position: absolute; inset: 0 -40px; z-index: -1; opacity: .16;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 22px, var(--ink) 22px 30px),
+    repeating-linear-gradient(0deg, transparent 0 14px, var(--ink) 14px 22px),
+    linear-gradient(90deg, #e86b6b, #f3b35b, #7fd1a4, #6fb3e8, #b48be0, #e86b6b);
+  mask-image: linear-gradient(180deg, transparent, #000 30%, #000 70%, transparent);
+}
+.sign {
+  font-family: var(--f-han);
+  font-size: clamp(64px, 14vw, 132px);
+  line-height: 1.02;
+  writing-mode: vertical-rl;
+  color: #ffe9ec;
+  padding: .18em .12em;
+  border: 3px solid var(--neon);
+  border-radius: 10px;
+  text-shadow: 0 0 6px var(--neon), 0 0 22px var(--neon), 0 0 48px rgba(255, 61, 85, .6);
+  box-shadow: 0 0 18px rgba(255, 61, 85, .55), inset 0 0 18px rgba(255, 61, 85, .35);
+  animation: flicker 2.6s ease-out 1 both;
+}
+@keyframes flicker {
+  0%, 8% { opacity: .25; } 10% { opacity: 1; } 13% { opacity: .35; } 16%, 40% { opacity: 1; }
+  42% { opacity: .6; } 45%, 100% { opacity: 1; }
+}
+.hero-text { display: grid; gap: 16px; }
+.eyebrow { font-family: var(--f-mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--jade); }
+.hero h1 { font-family: var(--f-display); font-size: clamp(36px, 7vw, 68px); line-height: 1.08; }
+.hero h1 em { font-style: normal; color: var(--amber); }
+.hero p { margin: 0; max-width: 34em; color: var(--muted); }
+.dates { display: flex; flex-wrap: wrap; gap: 8px; }
+.date {
+  display: grid; gap: 2px; padding: 8px 12px; border-radius: 6px;
+  background: var(--ink-2); border: 1px solid var(--line); min-width: 96px;
+  font-variant-numeric: tabular-nums;
+}
+.date b { font-family: var(--f-mono); font-weight: 500; font-size: 15px; }
+.date span { font-size: 12px; color: var(--muted); }
+.date[data-c="island"] { border-top: 3px solid var(--island); }
+.date[data-c="tsuenwan"] { border-top: 3px solid var(--tsuenwan); }
+.date[data-c="macau"] { border-top: 3px solid var(--macau); }
+
+/* ---------- nav ---------- */
+nav {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  margin-inline: calc(-1 * max(16px, env(safe-area-inset-left, 0px)));
+  padding-inline: max(16px, env(safe-area-inset-left, 0px));
+  background: rgba(13, 21, 23, .92); backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+nav .wrap { display: flex; gap: 4px; overflow-x: auto; padding-block: 10px; }
+nav a {
+  flex: none; text-decoration: none; padding: 6px 12px; border-radius: 999px;
+  font-size: 14px; font-weight: 500; color: var(--muted);
+}
+nav a:hover { color: var(--paper); background: var(--ink-3); }
+
+section { padding-block: 56px 8px; scroll-margin-top: 60px; }
+.sec-head { display: grid; gap: 8px; margin-bottom: 28px; }
+.sec-head h2 { font-family: var(--f-display); font-size: clamp(28px, 5vw, 40px); line-height: 1.15; }
+.sec-head p { margin: 0; color: var(--muted); max-width: 40em; }
+
+/* ---------- day = MTR line ---------- */
+.day { --c: var(--island); margin-bottom: 56px; }
+.day[data-c="tsuenwan"] { --c: var(--tsuenwan); }
+.day[data-c="macau"] { --c: var(--macau); }
+.day-board {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px;
+  padding: 14px 18px; border-radius: 8px;
+  background: var(--paper); color: var(--ink);
+}
+.day-board .no { font-family: var(--f-display); font-size: 26px; color: var(--c); filter: brightness(.8); }
+.day-board h3 { font-family: var(--f-display); font-size: 24px; flex: 1 1 14em; }
+.day-board .han { font-family: var(--f-han); font-size: 20px; }
+.day-board .lineTag {
+  font-family: var(--f-mono); font-size: 12px; padding: 3px 10px; border-radius: 999px;
+  background: var(--c); color: #fff; letter-spacing: .04em;
+}
+.day-grid { display: grid; gap: 24px; padding-top: 22px; }
+@media (min-width: 880px) {
+  .day-grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: start; }
+  .day-grid .mapbox { order: 2; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 64px); }
+}
+.mapbox { background: var(--ink-2); border: 1px solid var(--line); border-radius: 8px; padding: 10px; display: grid; gap: 8px; }
+.mapbox svg { display: block; width: 100%; height: auto; }
+.mapbox .coast { fill: none; stroke: var(--jade); stroke-opacity: .5; stroke-linejoin: round; }
+.mapbox .route { fill: none; stroke: var(--c); stroke-linecap: round; stroke-linejoin: round; }
+.mapbox .label { fill: var(--muted); font-family: var(--f-body); font-weight: 500; letter-spacing: .08em; }
+.mapbox .pin circle { fill: var(--ink); stroke: var(--paper); }
+.mapbox .pin text { fill: var(--paper); font-family: var(--f-mono); font-weight: 500; text-anchor: middle; dominant-baseline: central; }
+.mapbox .pin.opt circle { stroke: var(--muted); }
+.mapbox .pin:hover circle, .mapbox .pin:focus circle { stroke: var(--amber); }
+.mapbox .cand.food { fill: var(--amber); }
+.mapbox .cand.shop { fill: var(--jade); }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12px; color: var(--muted); }
+.legend i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+.stops { list-style: none; margin: 0; padding: 0; }
+.stop {
+  position: relative; display: grid; grid-template-columns: 64px 1fr; gap: 0 20px;
+  padding-bottom: 26px;
+}
+.stop::before { /* the line */
+  content: ""; position: absolute; left: 83px; top: 8px; bottom: -8px; width: 6px;
+  background: var(--c); border-radius: 3px;
+}
+.stop:last-child::before { bottom: auto; height: 12px; }
+.stop .t { font-family: var(--f-mono); font-size: 14px; color: var(--muted); text-align: right; padding-top: 2px; font-variant-numeric: tabular-nums; }
+.stop .body { position: relative; padding-left: 26px; display: grid; gap: 6px; }
+.stop .body::before { /* station dot, numbered like the map pins */
+  content: attr(data-n); position: absolute; left: -10px; top: 1px; width: 24px; height: 24px;
+  box-sizing: border-box; display: grid; place-items: center;
+  font: 500 11px var(--f-mono); color: var(--paper);
+  border-radius: 50%; background: var(--ink); border: 3px solid var(--paper);
+}
+.stop.opt .body::before { border-style: dashed; border-color: var(--muted); }
+.stop h4 { margin: 0; font-size: 18px; font-weight: 700; line-height: 1.35; }
+.stop h4 small { font-family: var(--f-han); font-size: 14px; color: var(--muted); font-weight: 900; margin-left: 6px; }
+.stop p { margin: 0; color: #cdd5d1; max-width: 60ch; }
+.tip { font-size: 13px; color: var(--jade); }
+.tip b { font-family: var(--f-mono); font-weight: 500; }
+.near { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.near a {
+  font-size: 13px; text-decoration: none; padding: 4px 10px; border-radius: 6px;
+  background: var(--ink-3); border: 1px solid var(--line); color: var(--paper);
+}
+.near a:hover { border-color: var(--amber); }
+.near a .n { font-family: var(--f-mono); color: var(--amber); margin-left: 4px; }
+
+/* ---------- vote board ---------- */
+.vote-bar {
+  display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: end;
+  padding: 16px 18px; border-radius: 8px; background: var(--ink-2); border: 1px solid var(--line);
+  margin-bottom: 20px;
+}
+.field { display: grid; gap: 4px; }
+.field label { font-size: 12px; color: var(--muted); letter-spacing: .04em; }
+.field input {
+  font: inherit; color: var(--paper); background: var(--ink); border: 1px solid var(--line);
+  border-radius: 6px; padding: 7px 10px; width: 12em;
+}
+.status { font-size: 13px; color: var(--muted); flex: 1 1 16em; }
+.status b { color: var(--jade); font-weight: 500; }
+.status.warn b { color: var(--amber); }
+.filters { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 28px; }
+.chip {
+  font: inherit; font-size: 13px; cursor: pointer; padding: 6px 12px; border-radius: 999px;
+  border: 1px solid var(--line); background: transparent; color: var(--muted);
+}
+.chip[aria-pressed="true"] { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+
+.zone { margin-bottom: 40px; scroll-margin-top: 70px; }
+.zone-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+.zone-head h3 { font-family: var(--f-display); font-size: 22px; }
+.zone-head .han { font-family: var(--f-han); color: var(--muted); }
+.zone-head .daytag { font-family: var(--f-mono); font-size: 12px; padding: 2px 8px; border-radius: 4px; color: #fff; }
+.zone-head .lead { font-size: 13px; color: var(--amber); margin-left: auto; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+.card {
+  display: grid; grid-template-rows: auto 1fr auto; gap: 10px;
+  padding: 14px; border-radius: 8px; background: var(--ink-2); border: 1px solid var(--line);
+  transition: border-color .15s;
+}
+.card.mine { border-color: var(--neon); box-shadow: 0 0 0 1px var(--neon) inset; }
+.card-top { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: start; }
+.card h4 { margin: 0; font-size: 16px; font-weight: 700; line-height: 1.35; }
+.card .kind { font-size: 12px; color: var(--muted); }
+.stamp {
+  font-family: var(--f-display); font-size: 14px; padding: 3px 8px; white-space: nowrap;
+  border: 2px solid currentColor; border-radius: 4px; transform: rotate(-6deg);
+}
+.stamp.food { color: var(--neon); }
+.stamp.shop { color: var(--jade); }
+.card .note { margin: 0; font-size: 14px; color: #cdd5d1; white-space: pre-line; }
+.card .note.empty { color: var(--muted); font-style: italic; }
+.card-foot { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.vote-btn {
+  font: inherit; font-size: 14px; font-weight: 700; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px; border-radius: 6px; border: 1px solid var(--neon);
+  background: transparent; color: var(--neon);
+}
+.vote-btn[aria-pressed="true"] { background: var(--neon); color: #fff; }
+.vote-btn:disabled { opacity: .45; cursor: not-allowed; }
+.count { font-family: var(--f-mono); font-size: 14px; color: var(--amber); font-variant-numeric: tabular-nums; }
+.voters { display: flex; }
+.voters img { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--ink-2); margin-left: -6px; }
+.voters img:first-child { margin-left: 0; }
+.map { margin-left: auto; font-size: 13px; color: var(--muted); }
+
+/* ---------- results ---------- */
+.results { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.res { padding: 14px 16px; border-radius: 8px; background: var(--ink-2); border: 1px solid var(--line); }
+.res h4 { margin: 0 0 8px; font-size: 15px; }
+.res ol { margin: 0; padding-left: 1.3em; display: grid; gap: 4px; font-size: 14px; }
+.res li span { font-family: var(--f-mono); color: var(--amber); margin-left: 6px; }
+.res .none { font-size: 13px; color: var(--muted); }
+
+/* ---------- stay ---------- */
+.stay { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.stay div { padding: 16px; border-radius: 8px; border: 1px solid var(--line); display: grid; gap: 6px; align-content: start; }
+.stay h4 { margin: 0; font-size: 16px; }
+.stay p { margin: 0; font-size: 14px; color: #cdd5d1; }
+.stay .pro { color: var(--jade); font-size: 13px; }
+
+footer { padding-block: 48px 40px; color: var(--muted); font-size: 13px; }
+
+@media (max-width: 560px) {
+  .hero { grid-template-columns: 1fr; }
+  .sign { writing-mode: horizontal-tb; justify-self: start; font-size: 64px; padding: .1em .3em; }
+  .stop { grid-template-columns: 48px 1fr; gap: 0 14px; }
+  .stop::before { left: 61px; }
+  .stop .t { font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sign { animation: none; }
+  html { scroll-behavior: auto; }
+}
+html { scroll-behavior: smooth; }
+</style>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="sign" aria-hidden="true">香港</div>
+    <div class="hero-text">
+      <div class="eyebrow">Hong Kong · Macau · 2026 Family Trip</div>
+      <h1>우리 가족<br><em>홍콩·마카오</em> 자유여행</h1>
+      <p>홍콩 이틀은 관광지 위주로 동선을 먼저 정해 두고, 각 동선 근처의 맛집과 기념품샵은 가족 투표로 고릅니다. 마음에 드는 곳에 <b>갈래요</b>를 눌러 주세요.</p>
+      <div class="dates">
+        <div class="date" data-c="island"><b>12.17 목</b><span>홍콩 1일차 · 홍콩섬</span></div>
+        <div class="date" data-c="tsuenwan"><b>12.18 금</b><span>홍콩 2일차 · 구룡</span></div>
+        <div class="date" data-c="macau"><b>12.19 토</b><span>마카오 1일차</span></div>
+        <div class="date" data-c="macau"><b>12.20 일</b><span>마카오 2일차</span></div>
+      </div>
+    </div>
+  </header>
+</div>
+
+<nav aria-label="섹션 이동">
+  <div class="wrap">
+    <a href="#d1">1일차</a>
+    <a href="#d2">2일차</a>
+    <a href="#vote">투표하기</a>
+    <a href="#result">투표 결과</a>
+    <a href="#macau">마카오</a>
+    <a href="#stay">숙소 고민</a>
+  </div>
+</nav>
+
+<main class="wrap">
+  <section id="route">
+    <div class="sec-head">
+      <div class="eyebrow">Route</div>
+      <h2>홍콩 이틀 동선</h2>
+      <p>시간은 대략적인 기준이에요. 12월 홍콩은 해가 17시 40분쯤 지니까, 야경 포인트는 그 시간에 맞춰 두었어요. 각 정류장 아래 칩을 누르면 그 근처 투표 후보로 이동해요.</p>
+    </div>
+    <div id="days"></div>
+  </section>
+
+  <section id="vote">
+    <div class="sec-head">
+      <div class="eyebrow">Vote</div>
+      <h2>어디 갈까? 가족 투표</h2>
+      <p>원하는 곳은 몇 개든 고를 수 있어요. 다시 누르면 취소돼요. 투표는 바로 저장되고, 다른 가족이 누른 결과도 실시간으로 보여요.</p>
+    </div>
+    <div class="vote-bar">
+      <div class="field">
+        <label for="nick">내 이름 (투표에 표시)</label>
+        <input id="nick" maxlength="12" placeholder="예: 엄마, 첫째">
+      </div>
+      <div class="status" id="status" role="status"><b>투표 저장소 연결 중…</b></div>
+    </div>
+    <div class="filters" role="group" aria-label="후보 필터">
+      <button class="chip" data-f="all" aria-pressed="true">전체</button>
+      <button class="chip" data-f="d1" aria-pressed="false">1일차 동선</button>
+      <button class="chip" data-f="d2" aria-pressed="false">2일차 동선</button>
+      <button class="chip" data-f="food" aria-pressed="false">음식·카페</button>
+      <button class="chip" data-f="shop" aria-pressed="false">기념품·쇼핑</button>
+    </div>
+    <div id="zones"></div>
+  </section>
+
+  <section id="result">
+    <div class="sec-head">
+      <div class="eyebrow">Result</div>
+      <h2>지역별 투표 순위</h2>
+      <p>지역마다 표를 많이 받은 순서예요. 동선을 확정할 때 지역별 상위 한두 곳을 넣으면 돼요.</p>
+    </div>
+    <div class="results" id="results"></div>
+  </section>
+
+  <section id="macau">
+    <div class="sec-head">
+      <div class="eyebrow">Macau · draft</div>
+      <h2>마카오 이틀 (초안)</h2>
+      <p>저장 목록에 있는 마카오 장소만 넣은 초안이에요. 홍콩 숙소와 이동 방법이 정해지면 다듬을게요.</p>
+    </div>
+    <div id="macauDays"></div>
+  </section>
+
+  <section id="stay">
+    <div class="sec-head">
+      <div class="eyebrow">Where to stay</div>
+      <h2>숙소 위치 후보</h2>
+      <p>1일차는 홍콩섬, 2일차는 구룡, 3일차 아침에는 마카오로 넘어가요. 이 동선 기준으로 이동이 편한 동네 세 곳이에요.</p>
+    </div>
+    <div class="stay">
+      <div>
+        <h4>성완 · 센트럴</h4>
+        <p>1일차 동선 한가운데이고, 마카오행 페리가 출발하는 홍콩-마카오 페리터미널(신톡센터)이 성완에 있어요.</p>
+        <span class="pro">1일차 편함 · 마카오 이동 편함</span>
+      </div>
+      <div>
+        <h4>침사추이 · 조던</h4>
+        <p>2일차 야경, 야시장 동선과 가깝고 숙소 선택지가 많아요. 침사추이에도 마카오행 페리터미널(차이나 페리터미널)이 있어요.</p>
+        <span class="pro">2일차 편함 · 밤 일정 끝나고 귀가 편함</span>
+      </div>
+      <div>
+        <h4>몽콕</h4>
+        <p>시장, 길거리 음식이 몰려 있고 비교적 저렴한 편이에요. 홍콩섬까지는 MTR로 20분 정도 걸려요.</p>
+        <span class="pro">가성비 · 2일차 편함</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    장소 정보와 메모는 Google 지도 저장 목록 「2026 홍콩 가족여행」에서 가져왔어요. 영업시간과 휴무일은 방문 전에 지도 링크에서 확인해 주세요.
+  </footer>
+</main>
+
+<script>
+const ZONES = {
+  east:    { name: "노스포인트 · 타이쿠", han: "北角 · 太古", day: "d1" },
+  wanchai: { name: "완차이 · 코즈웨이베이", han: "灣仔 · 銅鑼灣", day: "d1" },
+  central: { name: "성완 · 센트럴 · 소호", han: "上環 · 中環", day: "d1" },
+  mongkok: { name: "몽콕 · 프린스에드워드", han: "旺角 · 太子", day: "d2" },
+  jordan:  { name: "조던 · 야우마테이", han: "佐敦 · 油麻地", day: "d2" },
+  tst:     { name: "침사추이", han: "尖沙咀", day: "d2" },
+};
+
+// Candidates for the vote. cid = Google Maps place id from the saved list.
+const PLACES = [
+  { id: "binkee", zone: "east", cat: "food", name: "빙키", kind: "차찬탱", note: "연유피넛토스트", cid: "1766898258481199533" },
+  { id: "kingslipper", zone: "east", cat: "shop", name: "엠퍼러 슬리퍼", kind: "신발 가게", note: "신발 기념품", cid: "8017667963399934962" },
+
+  { id: "mycupoftea", zone: "wanchai", cat: "food", name: "마이컵오브티", kind: "차찬탱", note: "밀크티 맛집, 에그샌드위치, 토마토비프누들, 토스트", cid: "3134634912512399542" },
+  { id: "cheungfun", zone: "wanchai", cat: "food", name: "Cheung Fun Wong", kind: "길거리 간식", note: "길거리 간식", cid: "2627859269638516620" },
+  { id: "hohungkee", zone: "wanchai", cat: "food", name: "호흥키", kind: "완탕면", note: "완탕면 맛집", cid: "1363387194553389244" },
+  { id: "cheunghing", zone: "wanchai", cat: "food", name: "Cheung Hing Coffee Shop", kind: "차찬탱 · 해피밸리", note: "차찬탱, 파인애플번", cid: "360516057498639821" },
+  { id: "skye", zone: "wanchai", cat: "food", name: "SKYE Roofbar & Grill", kind: "루프탑 바", note: "야경", cid: "13215283965366989378" },
+
+  { id: "keunkee", zone: "central", cat: "food", name: "Keun Kee Wonton Noodle", kind: "완탕면", note: "완탕면 고추기름 한스푼", cid: "11717217292324768507" },
+  { id: "forkee", zone: "central", cat: "food", name: "For Kee", kind: "덮밥", note: "돼지갈비밥", cid: "16001606493220553281" },
+  { id: "hingkee", zone: "central", cat: "food", name: "Hing Kee", kind: "차찬탱", note: "정통 홍콩식 프렌치토스트", cid: "2382983965080125789" },
+  { id: "warlok", zone: "central", cat: "food", name: "와록카페", kind: "차찬탱", note: "프렌치토스트, 토마토라면?", cid: "14920191013263442410" },
+  { id: "linheung", zone: "central", cat: "food", name: "린흥 티하우스", kind: "딤섬 · 찻집", note: "차찬탱 현지, 시끄러울 수 있음", cid: "4173032956146084422" },
+  { id: "sangkee", zone: "central", cat: "food", name: "상기콘지", kind: "죽", note: "소고기죽 아침", cid: "821399089241296339" },
+  { id: "tsimchaikee", zone: "central", cat: "food", name: "침차이키", kind: "완탕면", note: "", cid: "8380974872586493257" },
+  { id: "onedimsum-c", zone: "central", cat: "food", name: "원 딤섬 (센트럴)", kind: "딤섬", note: "쇼마이와 하가우맛집", cid: "16521029323640915966" },
+  { id: "timhowan-c", zone: "central", cat: "food", name: "팀호완 (센트럴)", kind: "딤섬", note: "", cid: "10886404586109723191" },
+  { id: "lanfong-soho", zone: "central", cat: "food", name: "란퐁유엔 소호점", kind: "차찬탱", note: "", cid: "4563698427115015587" },
+  { id: "chilli", zone: "central", cat: "food", name: "Chilli Fagara", kind: "쓰촨 요리", note: "마파두부, 소고기튀김볶음, 탄탄면 다 맛있음. 구글예약가능. 가격대는 조금 있음.", cid: "11461487376549133923" },
+  { id: "duddells", zone: "central", cat: "food", name: "Duddell's", kind: "딤섬 바", note: "홍콩감성 가득 딤섬바", cid: "9177132888106571927" },
+  { id: "cardinal", zone: "central", cat: "food", name: "Cardinal Point", kind: "레스토랑", note: "", cid: "5222592154047836166" },
+  { id: "paperstone", zone: "central", cat: "food", name: "Paper Stone Bakery", kind: "베이커리", note: "피스타치오 에그타르트", cid: "6883024027479385634" },
+  { id: "shiushing", zone: "central", cat: "shop", name: "Shiu Shing Hong", kind: "향 · 오일 숍", note: "호텔 향수 등 에센셜 오일 파는 샵", cid: "15452784233955631681" },
+
+  { id: "onedimsum-m", zone: "mongkok", cat: "food", name: "원 딤섬 (프린스에드워드)", kind: "딤섬", note: "쇼마이와 하가우맛집", cid: "4795447438211965162" },
+  { id: "fuwah", zone: "mongkok", cat: "food", name: "Fu Wah Bakery", kind: "베이커리", note: "초코 카스테라", cid: "7141216641413810415" },
+  { id: "mochi-m", zone: "mongkok", cat: "food", name: "청차우 찹쌀모찌 (몽콕)", kind: "디저트", note: "망고모찌", cid: "10897796711945955091" },
+  { id: "hakdei", zone: "mongkok", cat: "food", name: "Hak Dei", kind: "음식점", note: "", cid: "17393437989568870158" },
+  { id: "fayuen", zone: "mongkok", cat: "shop", name: "Fa Yuen Street Market", kind: "시장", note: "기념품 핸드타올", cid: "12144509685224117163" },
+  { id: "ladies", zone: "mongkok", cat: "shop", name: "레이디스마켓", kind: "시장", note: "기념품", cid: "18255385939667396015" },
+  { id: "fully", zone: "mongkok", cat: "shop", name: "Fully Tableware & Equipment", kind: "주방용품", note: "밀크티컵", cid: "16892653857683033657" },
+
+  { id: "lanfong", zone: "jordan", cat: "food", name: "란퐁유엔", kind: "차찬탱", note: "차찬탱, 치킨누들", cid: "4442802535806592916" },
+  { id: "australia", zone: "jordan", cat: "food", name: "호주우유공사", kind: "차찬탱", note: "스크럼블에그, 밀크티", cid: "18038164721409490895" },
+  { id: "bamboo", zone: "jordan", cat: "food", name: "Bamboo Village", kind: "해산물", note: "크랩이 유명하나 마늘새우찜, 갯가재스파이시볶음 진짜 맛있습니다!", cid: "12837712544078221305" },
+  { id: "mochi-j", zone: "jordan", cat: "food", name: "청차우 찹쌀모찌 (조던)", kind: "디저트", note: "망고모찌", cid: "17420668373236010633" },
+  { id: "timhowan-j", zone: "jordan", cat: "food", name: "팀호완 (조던)", kind: "딤섬", note: "", cid: "16125336918690432548" },
+  { id: "sindart", zone: "jordan", cat: "shop", name: "Sindart 조던 본점", kind: "신발 가게", note: "신발", cid: "14064866679963255855" },
+
+  { id: "jenny", zone: "tst", cat: "shop", name: "제니베이커리", kind: "쿠키 · 선물용", note: "2층, 현금 딱 맞게, 잔돈안줌, 메뉴 현장에서 꼭 확인할것", cid: "3415375282988305722" },
+  { id: "elegant", zone: "tst", cat: "shop", name: "Elegant Tang Dynasty", kind: "기념품샵", note: "본점은 침사추이 네이던로드(침사추이역 A1/H 출구, iSquare 맞은편).\n센트럴 리위엔 동가, 피크타워 P1층, 몽콕 통초이 거리에도 지점이 있어요.", cid: "387107587066082911" },
+  { id: "marrow", zone: "tst", cat: "food", name: "마로우프 앤 퍼프 베이크", kind: "베이커리", note: "에타 맛집", cid: "8199736573795570555" },
+  { id: "churros", zone: "tst", cat: "food", name: "Twist & Buckle Churros", kind: "디저트", note: "", cid: "2034962322932345925" },
+  { id: "timhowan-t", zone: "tst", cat: "food", name: "팀호완 (침사추이)", kind: "딤섬", note: "", cid: "3170865645900794913" },
+  { id: "aqua", zone: "tst", cat: "food", name: "aqua", kind: "야경 레스토랑 · 바", note: "야경", cid: "125457935612973855" },
+];
+
+const DAYS = [
+  {
+    id: "d1", map: "hk", c: "island", no: "D1", date: "12.17 목", title: "홍콩섬 한 바퀴", han: "港島", line: "ISLAND LINE",
+    stops: [
+      { t: "09:00", name: "익청빌딩", ll: [22.28409, 114.21232], han: "益昌大廈", desc: "영화 〈트랜스포머〉로 유명해진 '몬스터 빌딩'. 사람이 몰리기 전인 아침에 가면 사진 찍기 좋아요.",
+        tip: "MTR <b>타이쿠역 B출구</b> → 직진 5분, 젠틀베이커리 옆 통로", zones: ["east"] },
+      { t: "10:30", name: "딩딩 트램 타고 서쪽으로", ll: [22.2803, 114.1838], han: "電車", desc: "2층 트램 앞자리에 앉아 노스포인트 → 코즈웨이베이 → 완차이 구간을 구경해요. 내리고 싶은 곳에서 자유롭게 내리면 돼요.",
+        tip: "옥토퍼스 카드로 내릴 때 찍기 · 거리 상관없이 같은 요금", zones: ["wanchai"] },
+      { t: "13:00", name: "성완 골목 산책", ll: [22.28639, 114.14914], han: "上環", desc: "건어물 거리와 할리우드 로드의 옛 홍콩 분위기. 점심은 이 근처 완탕면, 차찬탱 후보 중에서 골라요.",
+        tip: "MTR <b>성완역</b>", zones: ["central"] },
+      { t: "14:30", name: "미드레벨 에스컬레이터 · 소호거리", ll: [22.28385, 114.15497], han: "半山扶手電梯", desc: "세계에서 가장 긴 옥외 에스컬레이터를 타고 올라가면서 소호 골목을 구경해요. 에그타르트, 밀크티 타임.",
+        tip: "오전에는 내려가는 방향, 10시 이후에는 올라가는 방향으로 운행", zones: ["central"] },
+      { t: "15:30", name: "홍콩 동식물공원", ll: [22.27885, 114.15567], han: "動植物公園", desc: "센트럴 한복판의 오래된 공원. 피크트램 승강장까지 걸어서 가기 좋은 위치예요.", tip: "", zones: [] },
+      { t: "16:30", name: "피크트램 → 빅토리아 피크", ll: [22.2711, 114.1497], han: "山頂纜車", desc: "급경사를 올라가는 트램을 타고 피크로. 17:40쯤 해가 지니까 일몰부터 야경까지 한 번에 봐요.",
+        tip: "대기 줄이 길어요. 표는 미리 온라인 예매 추천", zones: [] },
+      { t: "19:30", name: "센트럴 저녁 · 야경 바", ll: [22.2812, 114.1556], han: "中環", desc: "피크에서 내려와 센트럴에서 저녁. 여유가 있으면 코즈웨이베이 루프탑 바에서 마무리.",
+        tip: "", zones: ["central", "wanchai"] },
+      { t: "여유", opt: true, name: "케네디타운 바닷가", ll: [22.28222, 114.12926], han: "堅尼地城", desc: "트램 서쪽 종점 동네. 1일차 시간이 남거나 아침 일정을 바꾸고 싶을 때 넣을 후보예요.",
+        tip: "목록의 Wellcome(케네디타운점)도 근처에 있어요", zones: [] },
+    ],
+  },
+  {
+    id: "d2", map: "hk", c: "tsuenwan", no: "D2", date: "12.18 금", title: "구룡 골목과 하버 야경", han: "九龍", line: "TSUEN WAN LINE",
+    stops: [
+      { t: "09:00", name: "초이홍 아파트", ll: [22.33448, 114.2072], han: "彩虹邨", desc: "무지개색 공공주택 단지. 주차장 옥상 농구장이 사진 포인트예요. 실제 주민이 사는 곳이라 조용히 둘러봐요.",
+        tip: "MTR <b>초이홍역</b> 바로 앞", zones: [] },
+      { t: "10:30", name: "구룡채성 공원", ll: [22.33213, 114.19033], han: "九龍寨城公園", desc: "한때 세계에서 가장 인구 밀도가 높았던 구룡성채 자리에 만든 중국식 정원.",
+        tip: "초이홍에서 택시로 10분 정도", zones: [] },
+      { t: "12:00", name: "몽콕 시장 골목", ll: [22.32297, 114.16985], han: "旺角", desc: "금붕어 시장 → 파윤 스트리트 → 레이디스마켓 순서로 걸어요. 기념품 쇼핑과 간식은 이 구간에서.",
+        tip: "MTR <b>프린스에드워드역</b>에서 시작해 몽콕역 방향으로", zones: ["mongkok"] },
+      { t: "15:30", name: "서구룡 문화지구", ll: [22.30025, 114.1559], han: "西九文化區", desc: "바닷가 잔디 공원과 M+ 미술관. 홍콩섬 스카이라인을 정면으로 보면서 일몰을 기다려요.", tip: "", zones: [] },
+      { t: "18:00", name: "침사추이 · 빅토리아 하버", ll: [22.29327, 114.17262], han: "維多利亞港", desc: "해변 산책로에서 야경. 매일 20:00에 하버 양쪽 빌딩이 조명쇼(심포니 오브 라이트)를 해요.",
+        tip: "스타페리로 홍콩섬을 왕복하는 것도 추천", zones: ["tst"] },
+      { t: "21:00", name: "템플스트리트 야시장", ll: [22.30652, 114.16998], han: "廟街夜市", desc: "저녁 늦게 열리는 야시장. 늦은 저녁은 근처 해산물집이나 차찬탱에서.",
+        tip: "MTR <b>조던역</b>", zones: ["jordan"] },
+    ],
+  },
+];
+
+const MACAU = [
+  {
+    id: "d3", map: "macau", c: "macau", no: "D3", date: "12.19 토", title: "마카오 반도 구시가", han: "澳門", line: "MACAU",
+    stops: [
+      { t: "오전", name: "홍콩 → 마카오 이동", han: "港澳", desc: "페리(성완 또는 침사추이 터미널) 또는 강주아오 대교 셔틀버스. 숙소 위치를 보고 정해요.", tip: "", zones: [] },
+      { t: "오후", name: "세나도 광장", ll: [22.19353, 113.53976], han: "議事亭前地", desc: "물결무늬 포르투갈식 바닥이 깔린 구시가 중심 광장.", tip: "", zones: [] },
+      { t: "", name: "성 도미니코 성당", ll: [22.19459, 113.5404], han: "玫瑰堂", desc: "세나도 광장에서 걸어서 바로 닿는 노란 성당.", tip: "", zones: [] },
+      { t: "", name: "몬테 요새", ll: [22.19679, 113.5423], han: "大炮台", desc: "언덕 위 요새에서 구시가와 성 바울 성당 유적 쪽을 내려다봐요.", tip: "", zones: [] },
+      { t: "식사", name: "웡치케이", ll: [22.1942, 113.54021], han: "黃枝記", desc: "목록 메모: 새우완탕면 백종원극찬. 세나도 광장 바로 옆이에요.", tip: "", zones: [] },
+    ],
+  },
+  {
+    id: "d4", map: "macau", c: "macau", no: "D4", date: "12.20 일", title: "코타이 · 피셔맨스워프", han: "路氹", line: "MACAU",
+    stops: [
+      { t: "", name: "코타이 스트립", ll: [22.14636, 113.56372], han: "路氹金光大道", desc: "대형 리조트가 모여 있는 거리. 실내 위주라 날씨와 상관없이 다니기 좋아요.", tip: "", zones: [] },
+      { t: "", name: "마카오 피셔맨스워프", ll: [22.19323, 113.55606], han: "漁人碼頭", desc: "바닷가 테마 거리. 귀국 시간에 맞춰 넣거나 뺄 예정이에요.", tip: "", zones: [] },
+    ],
+  },
+];
+
+// Candidate coordinates from the saved list, for the day maps.
+const COORDS = {
+  binkee: [22.27846, 114.19239], kingslipper: [22.29049, 114.19617], mycupoftea: [22.2761, 114.1729],
+  cheungfun: [22.27713, 114.17741], hohungkee: [22.27981, 114.18379], cheunghing: [22.26935, 114.18499],
+  skye: [22.28119, 114.18643], keunkee: [22.28517, 114.15038], forkee: [22.28519, 114.14788],
+  hingkee: [22.28515, 114.14874], warlok: [22.2852, 114.14949], linheung: [22.28668, 114.15229],
+  sangkee: [22.28531, 114.15168], tsimchaikee: [22.28298, 114.15443], "onedimsum-c": [22.2824, 114.15379],
+  "timhowan-c": [22.28451, 114.15814], "lanfong-soho": [22.28256, 114.15395], chilli: [22.28175, 114.15358],
+  duddells: [22.28026, 114.15724], cardinal: [22.28148, 114.15779], paperstone: [22.28678, 114.1506],
+  shiushing: [22.2857, 114.15015], "onedimsum-m": [22.32548, 114.16915], fuwah: [22.32009, 114.16545],
+  "mochi-m": [22.32128, 114.17035], hakdei: [22.3196, 114.16815], fayuen: [22.32174, 114.17072],
+  ladies: [22.31761, 114.17093], fully: [22.31108, 114.16971], lanfong: [22.2964, 114.17281],
+  australia: [22.30463, 114.17054], bamboo: [22.30394, 114.1696], "mochi-j": [22.30604, 114.16975],
+  "timhowan-j": [22.30394, 114.16488], sindart: [22.30399, 114.17027], jenny: [22.29726, 114.17264],
+  elegant: [22.29639, 114.17193], marrow: [22.29841, 114.17289], churros: [22.2979, 114.17531],
+  "timhowan-t": [22.29753, 114.17397], aqua: [22.2954, 114.17339],
+};
+
+// Coastlines from OpenStreetMap, projected to 10 m units from each map's top-left corner.
+const KX = Math.cos(22.25 * Math.PI / 180) * 11132, KY = 11057.4;
+const MAPS = {
+  hk: { lng0: 114.12, lat0: 22.345, coast: "M695 641 649 656M335 624 343 625 342 622 336 621M123 300 138 308 145 347 148 339 140 296 179 289 187 330 157 337 190 332 184 299 190 298 208 302 217 317 223 321 230 332 239 316 252 300 255 299 252 298 251 291 258 278 269 267 284 260 284 255 276 239 264 230 253 228 261 234M261 234 257 237 260 240 258 241 256 239 246 252 238 247 244 253 238 259 232 253 234 250 230 252 234 249 231 246 228 249 219 240 235 225 241 222 244 222 234 216M234 216 211 203M1032 413 1040 408 1051 423 1042 431 1043 432 1052 424 1061 436 1057 439 1083 470 1106 483 1119 507 1126 513 1144 519 1168 518 1188 513 1196 531 1161 549 1168 568 1206 607 1208 604 1200 596 1214 583 1221 591 1208 613 1206 620 1204 620 1206 621 1203 624 1204 625 1199 629M411 373 411 420 392 447M338 615 343 616 345 614 323 608 323 611 336 614M425 645 364 626 353 637M1172 671 1173 674 1167 679 1146 681 1137 685 1095 686 1080 671 1090 662 1087 662 1092 656 1091 655 1085 660 1079 654 1084 649 1083 647 1077 652 1053 628 1026 615 983 607 940 586 926 582 924 584 875 570 875 568 874 570 860 567M17 260 97 304 113 298 112 297 119 298M99 88 44 105 56 141M498 563 494 570 499 565 502 569 500 576 504 570M477 488 484 488 485 492M406 311 411 326 411 373M253 177 294 203 301 209 297 214 298 216 303 210 311 217 307 222 308 224 313 218 322 226 320 228 322 227 328 231 324 236 329 232 333 236 330 241 334 236 341 242 331 255 336 260 347 247 352 251 360 265 360 310M211 203 220 190 238 201 253 177M360 310 360 323 361 323 361 311M361 311 406 311M16 250 17 260M90 58 99 88M28 236 16 250M56 141 69 184 136 163M27 234 28 236M59 678 56 674 56 680 42 684 40 681 41 685 23 691M361 460 359 448 356 445 352 445 357 448 360 452 360 466 354 476 354 501 361 510 366 513 392 513 403 500M86 667 78 675 59 678M148 618 121 613 121 617 149 621 152 631 127 628 86 667M23 691 20 692M742 338 748 335 746 334 760 305 767 308 761 304 762 301 769 303 767 300M7 697 -12 703 -26 718 -37 743 -38 774M643 657 645 665 637 669 633 668 637 671 638 683 627 689 621 691 618 683 628 674 627 671 608 686 599 683 582 685M578 685 564 687 560 684M-38 774 -30 784 -21 787 -6 808 15 817 27 828 34 852 38 854 47 873 56 885 60 894 59 897 62 896 68 913 75 917 90 946 123 990 124 999 122 1011 126 1026 136 1026 145 1035 153 1050 166 1063 178 1064 183 1067 203 1063 217 1067 228 1072 244 1071 255 1098M649 656 695 643 695 641M696 631 710 641 710 647M710 647 712 652 719 655 720 661 676 674 668 682 651 693 649 691 653 669 652 666 649 668 648 665 653 664 647 665 643 657M445 671 440 667 434 649 425 645M336 614 338 615M335 620 324 617M336 621 335 620M334 624 335 624M328 622 334 624M326 622 328 622M323 621 326 622M324 617 320 618 323 621M317 625 308 614 264 603 210 601 195 605 194 601 194 605 190 606 188 603 189 607 176 610 174 606 175 610 166 613 163 609 164 613 157 615 155 612 156 615 148 618M325 627 317 625M326 628 325 627M333 629 326 628M334 630 333 629M341 632 334 630M449 672 445 671M452 673 449 672M465 679 452 673M468 680 465 679M470 681 468 680M474 681 470 681M500 687 490 683 474 681M505 570 506 570M504 570 505 570M498 562 498 563M499 562 498 562M506 570 507 569M488 506 497 546 460 554 461 562 498 554 499 562M353 637 341 632M731 480 731 479M726 483 731 480M721 485 722 487 725 486 726 483M714 488 721 485M711 490 715 496 717 495 714 488M583 547 624 508 627 509 627 506 631 502 645 502 645 520 639 524 641 528 650 523 650 503 658 503 662 512 711 490M570 567 583 547M564 572 563 567 570 567M563 572 564 572M545 571 550 566 550 573 563 572M544 572 545 571M507 569 511 576 544 572M582 685 581 685M560 684 560 677 563 670 559 661 559 667 545 665 538 668 535 676 524 689 500 687M581 685 580 677 578 678 578 685M937 352 963 326 1004 370 1025 397 1029 393 1034 400 1030 403 1035 401 1038 406 1031 412M997 437 982 422 983 412 981 407 960 387 958 390 961 389 957 394 946 388 924 367M1017 423 1032 413M767 300 764 297 776 273 783 268M1031 412 1017 423M924 367 825 273 833 252 937 352M17 18 26 47M8 -11 17 18M26 47 35 76 90 58M98 211 27 234M136 163 145 160 149 162 159 192 98 211M753 599 745 594 704 635 696 630 696 631M20 692 7 697M757 427 761 405 740 388M740 388 740 385 744 385 744 381 740 381 742 338M731 479 732 476 739 478 753 467 750 456 757 427M471 488 476 488 472 491 477 488M428 493 453 490M453 490 471 488M392 447 383 460 361 460M403 500 414 495 428 493M783 268 906 388 916 395 984 461 988 461 1003 446 1002 443 997 437M485 492 485 500 481 501 485 501 483 505 461 511 488 506M119 298 123 300M860 567 856 565 837 569 833 555 831 555 833 570 825 572 823 559 820 559 823 572 784 578 759 590 753 599",
+    labels: [["구룡", 22.322, 114.183], ["홍콩섬", 22.268, 114.17], ["빅토리아 하버", 22.2885, 114.18]] },
+  macau: { lng0: 113.52, lat0: 22.215, coast: "M427 115 424 102 424 66 421 52M274 1085 274 1079 272 1078 274 1044M380 247 378 243 382 242 377 231 378 222 382 215 373 208M628 121 632 100 671 28 672 24 667 18 616 3 540 4 533 11 515 40 516 57 529 67 532 75M349 -4 353 -13 352 -22 366 -20 388 -11 422 6 421 10 436 18 445 20 450 19 451 16 451 11 446 5 401 -18 363 -30 338 -32 336 -38 365 -93M388 268 380 247M373 208 380 196 387 197 414 188 420 177 431 174 437 169M202 100 194 104 206 103 205 105 207 105 209 111 210 111 190 116 186 113 179 117 177 129 180 131 176 130 174 143 177 148 176 156 172 156 170 165 173 166 170 177 168 177 167 186 169 186 169 189 164 188 160 204 166 206 162 208 156 224 161 226 158 227 160 228 155 227 153 236 148 240 123 272 125 274 107 298 108 302 105 302 109 310 98 319 91 331 89 340 92 356 97 366 108 380 130 395 148 394 166 394 167 396 183 392 205 392 252 380 248 360 235 361 245 359 246 356 264 353 267 354 282 346 263 357 267 376 269 378 293 371 305 364 315 352 324 321 323 320 305 327 305 324 332 314 335 317 366 304 373 327 379 328 390 321 394 306 398 308 389 294 392 288 387 288 386 284 393 283 397 275 390 272 388 268M108 501 94 504 56 525 8 483 18 471 24 457 30 436 35 432 34 414 75 269 71 266 73 266 77 259 75 254 79 246 84 250 110 204 115 189 117 168 114 154 111 144 94 114 102 104 112 103 117 119 123 123 126 130 134 130 152 95 149 85 153 84M194 103 202 100M437 169 422 118 427 115M585 659 590 652 597 659 601 657 599 653 591 650 599 634 608 597 605 586 655 567 647 543 635 546 632 544 615 494 626 527 619 553 613 562 616 574 603 577 606 557 601 557 601 560 592 557 593 552 596 551 594 548 595 545 598 544 597 538 600 537 598 535 599 531 602 530 600 524 588 521 587 524 584 525 586 528 584 532 582 532 583 538 580 539 582 545 579 546 581 549 579 555 561 550 564 540 561 540 558 550 551 548 555 532 553 531 575 495 573 488M153 84 180 73 210 65 205 65 204 62 209 60 204 61 202 55 207 52 198 53 216 48 224 77 219 78 220 81 174 95 174 101 181 105 194 103M274 1044 281 904 282 872 281 870 285 821 286 789 281 766 269 743 237 703 173 627 152 611 150 591 151 589 139 561 141 551 136 550 119 518 112 511 110 505 111 502 108 501M573 488 562 482 571 489 566 497 558 493 566 497M531 121 529 190 533 196 540 199 604 199 625 186 628 179 628 121M532 75 531 121M410 34 414 30 412 22 369 6 367 8 362 7 363 4 348 -2M421 52 410 34M566 497 561 505 542 501 535 527 505 506 459 490 457 520 462 525 479 530 472 554 452 548 435 551 417 549 412 546 386 541 379 536 377 540 369 546 357 546 343 542 327 543 301 553 295 550 292 555 262 561 239 562 226 569 214 563 202 539 195 541 205 600 224 661 231 669 267 696 298 734 301 733 302 730 285 709 289 706 310 706 310 740 301 738 327 776M324 959 325 1021 331 1028 329 1032 317 1041 310 1042 311 1046 308 1045 307 1047 309 1048 307 1059 305 1059 307 1060 302 1062 302 1064 307 1062 309 1065 310 1062 309 1066 314 1067 313 1072 316 1074 307 1077 319 1074 315 1097 310 1111 300 1119 307 1124 309 1133 315 1140 321 1141 345 1154 352 1162 376 1163 383 1155 380 1154 381 1152 399 1143 401 1135 407 1128 422 1122 426 1125 427 1137 430 1137 436 1144 447 1140 452 1136 462 1139 467 1134 476 1136 476 1138 468 1139 488 1139 491 1136 510 1142 524 1140 538 1132 546 1130 554 1120 559 1118 559 1116 556 1116 558 1100 550 1091 545 1093 534 1092 524 1093 525 1090 522 1092 518 1090 516 1076 521 1049 528 1033 552 1002 571 992 576 998 591 1005 595 1010 607 1009 621 1013 640 1000 652 995 661 977 677 965 677 963 681 964 680 962 682 962 688 966 694 964 697 966 702 964 700 968 703 971 711 973 720 971 727 961 725 958 738 950 739 952 745 951 748 945 747 940 743 942 746 938 747 926 745 925 741 926 727 897 728 888 715 879 700 899 696 895 700 889 684 879 676 890 661 880 659 883 651 885 648 880 649 875 647 865 643 868 645 871 639 881 630 882 623 876 624 854 619 846 647 818 652 805 654 806 656 802 657 803 658 796 644 797 604 824 600 829 606 840 599 841 592 846M327 776 329 782 328 940 324 950 324 959M592 846 584 838 590 829 593 818 598 819 607 814 616 812 643 794 655 790 661 792 670 788 679 801 710 780 699 762 697 745 591 675 579 672 575 675 576 669 583 663 585 659",
+    labels: [["마카오 반도", 22.2, 113.545], ["타이파", 22.16, 113.555], ["코타이", 22.135, 113.555]] },
+};
+
+const SVGNS = "http://www.w3.org/2000/svg";
+function sv(tag, attrs = {}, ...kids) {
+  const e = document.createElementNS(SVGNS, tag);
+  for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+  for (const k of kids) if (k != null) e.append(k);
+  return e;
+}
+
+function renderMap(d, t) {
+  const m = MAPS[d.map];
+  const P = ([lat, lng]) => [(lng - m.lng0) * KX, (m.lat0 - lat) * KY];
+  const pins = [];
+  let n = 0;
+  d.stops.forEach((s, i) => { if (s.ll) pins.push({ s, i, xy: P(s.ll), n: s.opt ? "+" : String(++n) }); });
+  const cands = PLACES.filter(p => ZONES[p.zone].day === d.id && COORDS[p.id]).map(p => ({ p, xy: P(COORDS[p.id]) }));
+
+  const pts = [...pins, ...cands].map(o => o.xy);
+  let x0 = Math.min(...pts.map(q => q[0])), x1 = Math.max(...pts.map(q => q[0]));
+  let y0 = Math.min(...pts.map(q => q[1])), y1 = Math.max(...pts.map(q => q[1]));
+  const pad = Math.max(50, 0.1 * Math.max(x1 - x0, y1 - y0));
+  x0 -= pad; x1 += pad; y0 -= pad; y1 += pad;
+  let w = x1 - x0, h = y1 - y0;
+  if (w / h > 1.25) { const dh = w / 1.25 - h; y0 -= dh / 2; h += dh; }
+  if (w / h < 0.85) { const dw = h * 0.85 - w; x0 -= dw / 2; w += dw; }
+  const u = w / 100;
+
+  const svg = sv("svg", { viewBox: `${x0.toFixed(0)} ${y0.toFixed(0)} ${w.toFixed(0)} ${h.toFixed(0)}`, role: "img", "aria-label": d.date + " 동선 지도" });
+  svg.append(sv("path", { class: "coast", d: m.coast, "stroke-width": (0.35 * u).toFixed(1) }));
+  for (const [txt, lat, lng] of m.labels) {
+    const [x, y] = P([lat, lng]);
+    svg.append(sv("text", { class: "label", x, y, "font-size": (2.6 * u).toFixed(1), "text-anchor": "middle" }, txt));
+  }
+  const route = pins.filter(o => !o.s.opt).map(o => o.xy.map(v => v.toFixed(0)).join(",")).join(" ");
+  svg.append(sv("polyline", { class: "route", points: route, "stroke-width": (0.9 * u).toFixed(1), "stroke-opacity": ".85" }));
+  for (const c of cands) {
+    const votes = (t && t[c.p.id]) ? t[c.p.id].length : 0;
+    svg.append(sv("circle", { class: "cand " + c.p.cat, cx: c.xy[0].toFixed(0), cy: c.xy[1].toFixed(0), r: ((0.8 + 0.35 * Math.min(votes, 4)) * u).toFixed(1) },
+      sv("title", {}, c.p.name + (votes ? " · " + votes + "표" : ""))));
+  }
+  for (const o of pins) {
+    const a = sv("a", { class: "pin" + (o.s.opt ? " opt" : ""), href: "#" + d.id + "-s" + o.i },
+      sv("title", {}, o.s.name),
+      sv("circle", { cx: o.xy[0].toFixed(0), cy: o.xy[1].toFixed(0), r: (1.9 * u).toFixed(1), "stroke-width": (0.5 * u).toFixed(1), ...(o.s.opt ? { "stroke-dasharray": (0.8 * u).toFixed(1) } : {}) }),
+      sv("text", { x: o.xy[0].toFixed(0), y: o.xy[1].toFixed(0), "font-size": (2 * u).toFixed(1) }, o.n));
+    svg.append(a);
+  }
+  const legend = el("div", { class: "legend" },
+    el("span", {}, el("i", { style: "background:var(--c)" }), "동선 순서"));
+  if (cands.length) legend.append(
+    el("span", {}, el("i", { style: "background:var(--amber)" }), "맛집 후보"),
+    el("span", {}, el("i", { style: "background:var(--jade)" }), "쇼핑 후보 · 표가 많을수록 커져요"));
+  return el("div", { class: "mapbox" }, svg, legend);
+}
+
+const mapUrl = cid => "https://maps.google.com/?cid=" + cid;
+const byZone = z => PLACES.filter(p => p.zone === z);
+const $ = s => document.querySelector(s);
+
+// ---------- vote state ----------
+let votes = {};          // uid -> { name, picks: [] }
+let myId = null;
+let myPicks = new Set();
+let canVote = false;
+let gotMine = false;
+let filter = "all";
+let profiles = {};
+let userNs = null;
+
+function tally() {
+  const t = {};
+  for (const [uid, v] of Object.entries(votes)) {
+    for (const pid of v.picks || []) (t[pid] ||= []).push(uid);
+  }
+  return t;
+}
+function voterName(uid) {
+  const v = votes[uid];
+  return (v && v.name) || (profiles[uid] && profiles[uid].name) || "가족";
+}
+
+// ---------- render ----------
+function el(tag, attrs = {}, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === "class") e.className = v; else if (k === "html") e.innerHTML = v; else e.setAttribute(k, v);
+  }
+  for (const k of kids) if (k != null) e.append(k);
+  return e;
+}
+
+function renderDays(target, days, t) {
+  const root = $(target);
+  root.replaceChildren();
+  for (const d of days) {
+    const box = el("article", { class: "day", id: d.id, "data-c": d.c });
+    box.append(el("div", { class: "day-board" },
+      el("span", { class: "no" }, d.no),
+      el("h3", {}, d.title + " ", el("span", { class: "han" }, d.han)),
+      el("span", { class: "lineTag" }, d.date + " · " + d.line)));
+    const ol = el("ol", { class: "stops" });
+    let n = 0;
+    d.stops.forEach((s, i) => {
+      const body = el("div", { class: "body", "data-n": s.ll ? (s.opt ? "+" : String(++n)) : "" },
+        el("h4", {}, s.name, el("small", {}, s.han)),
+        el("p", {}, s.desc));
+      if (s.tip) body.append(el("div", { class: "tip", html: s.tip }));
+      if (s.zones.length) {
+        const near = el("div", { class: "near" });
+        for (const z of s.zones) {
+          const n = byZone(z).reduce((a, p) => a + ((t && t[p.id]) ? t[p.id].length : 0), 0);
+          near.append(el("a", { href: "#zone-" + z }, "근처 후보 · " + ZONES[z].name, el("span", { class: "n" }, n ? n + "표" : byZone(z).length + "곳")));
+        }
+        body.append(near);
+      }
+      ol.append(el("li", { class: "stop" + (s.opt ? " opt" : ""), id: d.id + "-s" + i }, el("div", { class: "t" }, s.t), body));
+    });
+    box.append(el("div", { class: "day-grid" }, renderMap(d, t), ol));
+    root.append(box);
+  }
+}
+
+function renderZones(t) {
+  const root = $("#zones");
+  root.replaceChildren();
+  for (const [zid, z] of Object.entries(ZONES)) {
+    if ((filter === "d1" || filter === "d2") && z.day !== filter) continue;
+    const items = byZone(zid).filter(p => filter === "food" || filter === "shop" ? p.cat === filter : true);
+    if (!items.length) continue;
+    const day = DAYS.find(d => d.id === z.day);
+    const lead = items.slice().sort((a, b) => (t[b.id]?.length || 0) - (t[a.id]?.length || 0))[0];
+    const head = el("div", { class: "zone-head" },
+      el("h3", {}, z.name),
+      el("span", { class: "daytag", style: "background:var(--" + day.c + ")" }, day.no + " " + day.date));
+    if (lead && t[lead.id]) head.append(el("span", { class: "lead" }, "현재 1위 · " + lead.name));
+    const grid = el("div", { class: "grid" });
+    for (const p of items) {
+      const who = t[p.id] || [];
+      const mine = myPicks.has(p.id);
+      const btn = el("button", { class: "vote-btn", "aria-pressed": String(mine), "data-id": p.id }, mine ? "✓ 갈래요" : "갈래요");
+      if (!canVote) btn.disabled = true;
+      const voters = el("span", { class: "voters" });
+      for (const uid of who.slice(0, 6)) {
+        const pr = profiles[uid];
+        const img = el("img", { alt: voterName(uid), title: voterName(uid) });
+        img.src = pr ? pr.avatarUrl : "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Ccircle cx='5' cy='5' r='5' fill='%2393a6a4'/%3E%3C/svg%3E";
+        voters.append(img);
+      }
+      const names = who.map(voterName).join(", ");
+      grid.append(el("article", { class: "card" + (mine ? " mine" : "") },
+        el("div", { class: "card-top" },
+          el("div", {}, el("h4", {}, p.name), el("div", { class: "kind" }, p.kind)),
+          el("span", { class: "stamp " + p.cat }, p.cat === "food" ? "맛집" : "쇼핑")),
+        el("p", { class: "note" + (p.note ? "" : " empty") }, p.note || "목록에 메모가 없어요. 지도에서 확인해 주세요."),
+        el("div", { class: "card-foot" },
+          btn,
+          el("span", { class: "count", title: names }, who.length ? who.length + "표" : ""),
+          voters,
+          el("a", { class: "map", href: mapUrl(p.cid), target: "_blank", rel: "noopener" }, "지도 ↗"))));
+    }
+    root.append(el("div", { class: "zone", id: "zone-" + zid }, head, grid));
+  }
+}
+
+function renderResults(t) {
+  const root = $("#results");
+  root.replaceChildren();
+  for (const [zid, z] of Object.entries(ZONES)) {
+    const ranked = byZone(zid).filter(p => t[p.id]).sort((a, b) => t[b.id].length - t[a.id].length);
+    const box = el("div", { class: "res" }, el("h4", {}, z.name + " "));
+    if (!ranked.length) box.append(el("div", { class: "none" }, "아직 표가 없어요."));
+    else {
+      const ol = el("ol");
+      for (const p of ranked.slice(0, 5)) ol.append(el("li", {}, p.name, el("span", {}, t[p.id].length + "표")));
+      box.append(ol);
+    }
+    root.append(box);
+  }
+}
+
+function renderAll() {
+  const t = tally();
+  renderDays("#days", DAYS, t);
+  renderZones(t);
+  renderResults(t);
+}
+
+function setStatus(text, warn) {
+  const s = $("#status");
+  s.className = "status" + (warn ? " warn" : "");
+  s.innerHTML = "";
+  const [b, ...rest] = text.split("|");
+  s.append(el("b", {}, b), rest.length ? " " + rest.join("|") : "");
+}
+
+renderDays("#macauDays", MACAU, null);
+renderAll();
+
+// ---------- filters & clicks ----------
+document.querySelector(".filters").addEventListener("click", e => {
+  const b = e.target.closest(".chip");
+  if (!b) return;
+  filter = b.dataset.f;
+  document.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", String(c === b)));
+  renderZones(tally());
+});
+$("#zones").addEventListener("click", e => {
+  const b = e.target.closest(".vote-btn");
+  if (!b || !canVote) return;
+  const id = b.dataset.id;
+  myPicks.has(id) ? myPicks.delete(id) : myPicks.add(id);
+  votes[myId] = { ...(votes[myId] || {}), name: $("#nick").value.trim(), picks: [...myPicks] };
+  renderAll();
+  scheduleSave();
+});
+let nickTimer;
+$("#nick").addEventListener("input", () => {
+  if (!canVote) return;
+  clearTimeout(nickTimer);
+  nickTimer = setTimeout(() => {
+    votes[myId] = { ...(votes[myId] || {}), name: $("#nick").value.trim(), picks: [...myPicks] };
+    renderAll();
+    scheduleSave();
+  }, 600);
+});
+
+// ---------- db ----------
+let db = null, saveTimer, writing = false, again = false;
+function scheduleSave() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(save, 400);
+}
+async function save() {
+  if (writing) { again = true; return; }
+  writing = true;
+  try {
+    await db.doc("votes/" + myId).set({ name: $("#nick").value.trim(), picks: [...myPicks], updatedAt: Date.now() });
+  } catch (e) {
+    if (e && e.code === "invalid_argument") {
+      canVote = false;
+      setStatus("투표 권한이 없어요.|이 페이지 소유자에게 '편집자'로 초대해 달라고 요청해 주세요.", true);
+      renderAll();
+    } else {
+      setStatus("저장하지 못했어요.|잠시 후 다시 눌러 주세요.", true);
+    }
+  } finally {
+    writing = false;
+    if (again) { again = false; save(); }
+  }
+}
+
+async function refreshProfiles() {
+  if (!userNs) return;
+  const ids = Object.keys(votes);
+  if (!ids.length) return;
+  profiles = await userNs.profiles(ids);
+  renderAll();
+}
+
+(async () => {
+  if (!window.claude || !window.claude.use) {
+    setStatus("투표 기능을 쓸 수 없는 화면이에요.|claude.ai에 로그인해서 이 페이지를 열어 주세요.", true);
+    return;
+  }
+  const [dbNs, u] = await Promise.all([claude.use("db"), claude.use("user")]);
+  db = dbNs; userNs = u;
+  if (!db) {
+    setStatus("투표를 불러올 수 없어요.|claude.ai에 로그인한 상태로 이 페이지를 열어 주세요.", true);
+    return;
+  }
+  myId = u ? await u.id() : null;
+  const may = u ? await u.can("data.write") : null;
+  canVote = !!myId;
+  db.collection("votes").onSnapshot(snap => {
+    const next = {};
+    for (const d of snap.docs) next[d.id] = d.data();
+    if (myId && votes[myId] && writing) next[myId] = votes[myId];
+    votes = next;
+    if (!gotMine && myId) {
+      gotMine = true;
+      const mine = votes[myId];
+      if (mine) {
+        myPicks = new Set(mine.picks || []);
+        if (mine.name) $("#nick").value = mine.name;
+      }
+    }
+    const n = Object.values(votes).filter(v => (v.picks || []).length).length;
+    if (canVote) setStatus("투표 연결됨|· 지금까지 " + n + "명 참여");
+    else setStatus("보기 전용이에요.|결과는 볼 수 있지만 투표하려면 로그인과 편집 권한이 필요해요.", true);
+    renderAll();
+    refreshProfiles();
+  }, () => setStatus("투표 연결이 끊겼어요.|페이지를 새로고침해 주세요.", true));
+  if (may === false) {
+    canVote = false;
+    setStatus("보기 전용이에요.|투표하려면 이 페이지 소유자에게 '편집자'로 초대해 달라고 요청해 주세요.", true);
+  }
+  renderAll();
+})();
+</script>

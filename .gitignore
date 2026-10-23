@@ -1,0 +1,3 @@
+# Original vouchers stay local; use the shared Drive folder on the site.
+assets/vouchers/
+.DS_Store
