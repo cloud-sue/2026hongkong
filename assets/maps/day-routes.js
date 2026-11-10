@@ -3,35 +3,13 @@ window.DAY_ROUTES = [
     "date": "12.17 THU",
     "groups": [
       {
-        "stopIndex": 0,
-        "number": 1,
-        "time": "11:20",
-        "title": "홍콩 공항 도착",
-        "optional": false,
-        "alternatives": false,
-        "points": [
-          {
-            "name": "홍콩 국제 공항",
-            "lat": 22.3134736,
-            "lng": 113.91372829999999,
-            "url": "https://www.google.com/maps?cid=18011461173170550430"
-          }
-        ]
-      },
-      {
         "stopIndex": 1,
-        "number": 2,
+        "number": 1,
         "time": "12:30",
         "title": "A21 공항버스 탑승",
         "optional": false,
         "alternatives": false,
         "points": [
-          {
-            "name": "홍콩 국제 공항",
-            "lat": 22.3134736,
-            "lng": 113.91372829999999,
-            "url": "https://www.google.com/maps?cid=18011461173170550430"
-          },
           {
             "name": "홍콩 더미라 호텔",
             "lat": 22.3003264,
@@ -42,7 +20,7 @@ window.DAY_ROUTES = [
       },
       {
         "stopIndex": 2,
-        "number": 3,
+        "number": 2,
         "time": "13:30–14:00",
         "title": "호텔 도착 · 체크인 확인",
         "optional": false,
@@ -58,7 +36,7 @@ window.DAY_ROUTES = [
       },
       {
         "stopIndex": 3,
-        "number": 4,
+        "number": 3,
         "time": "14:00",
         "title": "팀호완에서 점심",
         "optional": false,
@@ -74,7 +52,7 @@ window.DAY_ROUTES = [
       },
       {
         "stopIndex": 4,
-        "number": 5,
+        "number": 4,
         "time": "15:00",
         "title": "Twist & Buckle 츄러스",
         "optional": false,
@@ -90,7 +68,7 @@ window.DAY_ROUTES = [
       },
       {
         "stopIndex": 5,
-        "number": 6,
+        "number": 5,
         "time": "15:30",
         "title": "제니쿠키 · 기념품 · 에그타르트",
         "optional": false,
@@ -118,7 +96,7 @@ window.DAY_ROUTES = [
       },
       {
         "stopIndex": 6,
-        "number": 7,
+        "number": 6,
         "time": "16:30",
         "title": "금붕어 시장부터 레이디스 마켓",
         "optional": false,
@@ -152,7 +130,7 @@ window.DAY_ROUTES = [
       },
       {
         "stopIndex": 7,
-        "number": 8,
+        "number": 7,
         "time": "18:30",
         "title": "템플스트리트 야시장과 저녁",
         "optional": false,
@@ -174,7 +152,7 @@ window.DAY_ROUTES = [
       },
       {
         "stopIndex": 8,
-        "number": 9,
+        "number": 8,
         "time": "22:00",
         "title": "스타의 거리 야경 · 선택",
         "optional": true,
