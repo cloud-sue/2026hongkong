@@ -153,6 +153,22 @@ window.DAY_ROUTES = [
       {
         "stopIndex": 8,
         "number": 8,
+        "time": "20:40",
+        "title": "오픈형 2층 버스 투어",
+        "optional": false,
+        "alternatives": false,
+        "points": [
+          {
+            "name": "구룡 호텔 앞 미팅 장소 (Middle Road 인도)",
+            "lat": 22.2956,
+            "lng": 114.17172,
+            "url": "https://www.google.com/maps/search/?api=1&query=The+Kowloon+Hotel+19-21+Nathan+Rd+Tsim+Sha+Tsui"
+          }
+        ]
+      },
+      {
+        "stopIndex": 9,
+        "number": 9,
         "time": "22:00",
         "title": "스타의 거리 야경 · 선택",
         "optional": true,
